@@ -2,10 +2,11 @@
   <div class="main-container">
     <h2>Country Finder</h2>
     <div>
-    <country-select :countries='countries'></country-select>
+    <!-- <country-select :countries='countries'></country-select> -->
+    <country-select> </country-select>
   </div>
   <div>
-    <country-selected-detail v-if="selectedCountry" :country='selectedCountry'></country-selected-detail>
+    <country-selected-detail v-if="searchCountries.length === 1" :country='searchCountries[0]'></country-selected-detail>
   </div>
   </div>
 </template>
@@ -20,7 +21,8 @@ export default {
   data(){
     return {
       countries: [],
-      selectedCountry: null
+      selectedCountry: null,
+      countriesSearch: []
     };
   },
 
@@ -37,7 +39,15 @@ export default {
   components: {
     "country-select": CountrySelect,
     "country-selected-detail": CountrySelectedDetail
+  },
+
+  computed: {
+    searchCountries(){
+      if (this.selectedCountry !== null){
+      return this.countries.filter(country => country.name.toLowerCase().includes(this.selectedCountry.toLowerCase()))
+    }else return "null"
   }
+}
 }
 </script>
 
@@ -50,7 +60,7 @@ export default {
   height: 100vh;
   background-color: lightGray;
   justify-content: center;
-  
+
 }
 
 .detail{
